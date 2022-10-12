@@ -5,7 +5,6 @@ import com.shopapi.shopapi.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -17,8 +16,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<Product> updateProduct(Product product){
-        return Optional.of(productRepository.save(product));
+    public void updateProduct(Product product){
+        productRepository.save(product);
     }
 
     public void removeProductById(Long id){
