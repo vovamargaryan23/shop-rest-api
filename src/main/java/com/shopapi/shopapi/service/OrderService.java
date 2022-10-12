@@ -20,7 +20,7 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Optional<Order> getOrderbyId(Long orderId){
+    public Optional<Order> getOrderById(Long orderId){
         return Optional.ofNullable(orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
