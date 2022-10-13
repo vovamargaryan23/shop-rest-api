@@ -5,6 +5,7 @@ import com.shopapi.shopapi.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +18,11 @@ public class UserController {
     private ProductService productService;
 
     @Autowired
-    private Set<Product> cart;
+    private final Set<Product> cart;
+
+    public UserController() {
+        this.cart = new HashSet<>();
+    }
 
     @GetMapping("/products")
     public List<Product> findAllProducts(){
