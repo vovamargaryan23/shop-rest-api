@@ -1,9 +1,6 @@
 package com.shopapi.shopapi.entity;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "products")
 @Getter
 @Setter
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Product {
     @Id
@@ -26,8 +24,8 @@ public class Product {
     @NonNull
     private Long price;
 
-    @ManyToOne(targetEntity = ProductCategory.class)
-    @JoinColumn(name = "product_category")
+    @OneToOne(targetEntity = ProductCategory.class)
+    @JoinColumn(name = "category_id")
     @NonNull
     private ProductCategory productCategory;
 

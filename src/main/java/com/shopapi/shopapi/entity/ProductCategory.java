@@ -1,9 +1,7 @@
 package com.shopapi.shopapi.entity;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "product_categories")
 @Getter
 @Setter
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class ProductCategory {
     @Id
@@ -18,7 +17,7 @@ public class ProductCategory {
     @Column(name = "category_id", nullable = false)
     private Long categoryId;
 
-    @Column(name = "category_name",nullable = false)
+    @Column(name = "category_name",nullable = false, unique = true)
     @NonNull
     private String name;
 
