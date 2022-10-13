@@ -28,8 +28,11 @@ public class AdminController {
         productService.updateProduct(product);
     }
 
-    @PatchMapping("/products")
-    public void updateProduct(@RequestBody Product product){
+    @PatchMapping("/products/{productId}")
+    public void updateProduct(@RequestBody Product product, @PathVariable("productId") Long productId){
+        if(productService.existsById(productId)){
+            product.setProductId(productId);
+        }
         productService.updateProduct(product);
     }
 

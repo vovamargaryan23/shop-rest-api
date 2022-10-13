@@ -4,7 +4,10 @@ import com.shopapi.shopapi.entity.Product;
 import com.shopapi.shopapi.repository.CategoryRepository;
 import com.shopapi.shopapi.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -28,6 +31,15 @@ public class ProductService {
             product.setProductCategory(categoryRepository.findByName(product.getProductCategory().getName()));
         }
         productRepository.save(product);
+
+    }
+
+    public boolean existsById(Long id){
+        return productRepository.existsById(id);
+    }
+
+    public Product findById(Long id){
+        return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public void removeProductById(Long id){

@@ -33,9 +33,9 @@ public class UserController {
         return cart;
     }
 
-    @PostMapping("/cart")
-    public void addToCart(@RequestBody Product product){
-        cart.add(product);
+    @PostMapping("/cart/{productId}")
+    public void addToCart(@PathVariable("productId") Long productId){
+        cart.add(productService.findById(productId));
     }
 
     @DeleteMapping("/cart/{productId}")
