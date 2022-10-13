@@ -17,7 +17,6 @@ public class UserController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
     private final Set<Product> cart;
 
     public UserController() {
