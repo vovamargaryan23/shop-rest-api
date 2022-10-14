@@ -3,6 +3,7 @@ package com.shopapi.shopapi.controller;
 import com.shopapi.shopapi.entity.Product;
 import com.shopapi.shopapi.service.OrderService;
 import com.shopapi.shopapi.service.ProductService;
+import com.shopapi.shopapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,8 @@ public class MainController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserService userService;
     private final Set<Product> cart;
 
 
