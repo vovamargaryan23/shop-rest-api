@@ -1,11 +1,14 @@
 package com.shopapi.shopapi.controller;
 
 import com.shopapi.shopapi.entity.Product;
+import com.shopapi.shopapi.entity.Role;
 import com.shopapi.shopapi.service.OrderService;
 import com.shopapi.shopapi.service.ProductService;
 import com.shopapi.shopapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -56,12 +59,14 @@ public class MainController {
     //Admin Requests
 
     @PostMapping("/products")
-    public void addProduct(@RequestBody Product product){
+    public void addProduct(@RequestBody Product product, @PathVariable("userId") Long userId){
+        checkUser(userId);
         productService.updateProduct(product);
     }
 
     @PatchMapping("/products/{productId}")
-    public void updateProduct(@RequestBody Product product, @PathVariable("productId") Long productId){
+    public void updateProduct(@RequestBody Product product, @PathVariable("productId") Long productId, @PathVariable("userId") Long userId){
+        checkUser(userId);
         if(productService.existsById(productId)){
             product.setProductId(productId);
         }
@@ -69,8 +74,15 @@ public class MainController {
     }
 
     @DeleteMapping("/products/{productId}")
-    public void removeProduct(@PathVariable("productId") Long id){
+    public void removeProduct(@PathVariable("productId") Long id,@PathVariable("userId") Long userId){
+        checkUser(userId);
         productService.removeProductById(id);
+    }
+
+    private void checkUser(Long id){
+        if(!userService.findById(id).getRole().equals(Role.ROLE_ADMIN)){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 
 }
