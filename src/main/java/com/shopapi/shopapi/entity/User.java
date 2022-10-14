@@ -25,6 +25,7 @@ public class User {
     private String lastName;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     @NonNull
     private Role role;
 }
