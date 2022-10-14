@@ -13,7 +13,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/{userId}")
-public class AdminController {
+public class MainController {
 
     @Autowired
     private ProductService productService;
@@ -24,7 +24,7 @@ public class AdminController {
     private final Set<Product> cart;
 
 
-    public AdminController() {
+    public MainController() {
         this.cart = new HashSet<>();
     }
 
