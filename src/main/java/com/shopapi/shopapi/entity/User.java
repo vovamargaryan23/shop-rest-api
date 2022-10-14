@@ -1,9 +1,6 @@
 package com.shopapi.shopapi.entity;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class User {
     @Id
