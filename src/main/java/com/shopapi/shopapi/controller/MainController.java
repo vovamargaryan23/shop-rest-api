@@ -1,5 +1,7 @@
 package com.shopapi.shopapi.controller;
 
+import com.shopapi.shopapi.entity.Order;
+import com.shopapi.shopapi.entity.OrderStatus;
 import com.shopapi.shopapi.entity.Product;
 import com.shopapi.shopapi.entity.Role;
 import com.shopapi.shopapi.service.OrderService;
@@ -10,10 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
 
 @RestController
 @RequestMapping("/{userId}")
@@ -29,9 +33,12 @@ public class MainController {
     private UserService userService;
     private final Set<Product> cart;
 
+    private final Set<Order> submission;
+
 
     public MainController() {
         this.cart = new HashSet<>();
+        this.submission = new HashSet<>();
     }
 
     //User Requests
@@ -53,6 +60,16 @@ public class MainController {
     @DeleteMapping("/cart/{productId}")
     public void removeFromCart(@PathVariable("productId") Long id){
         cart.removeIf(s -> Objects.equals(s.getProductId(), id));
+    }
+
+    @PostMapping("/cart/submit")
+    public void submitForApproval(@PathVariable("userId") Long userId){
+        cart.forEach(product -> {
+            submission.add(new Order(userId,product.getProductId(), LocalDateTime.now(), OrderStatus.PENDING));
+        });
+        orderService.saveAll(submission);
+        submission.clear();
+        cart.clear();
     }
 
 
@@ -78,6 +95,25 @@ public class MainController {
         checkUser(userId);
         productService.removeProductById(id);
     }
+
+    @GetMapping("/orders")
+    public List<Order> getOrders(@PathVariable("userId") Long userId){
+        checkUser(userId);
+       return orderService.findAll();
+    }
+
+    @PostMapping("/orders/{orderId}/approve")
+    public void approveOrder(@PathVariable("orderId") Long orderId, @PathVariable("userId") Long userId){
+        checkUser(userId);
+        orderService.setStatusById(orderId,OrderStatus.APPROVED);
+    }
+
+    @PostMapping("/orders/{orderId}/decline")
+    public void declineOrder(@PathVariable("orderId") Long orderId, @PathVariable("userId") Long userId){
+        checkUser(userId);
+        orderService.setStatusById(orderId,OrderStatus.DECLINED);
+    }
+
 
     private void checkUser(Long id){
         if(!userService.findById(id).getRole().equals(Role.ROLE_ADMIN)){
