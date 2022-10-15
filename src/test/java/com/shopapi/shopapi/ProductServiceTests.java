@@ -1,7 +1,6 @@
 package com.shopapi.shopapi;
 
-import com.shopapi.shopapi.entity.Order;
-import com.shopapi.shopapi.entity.OrderStatus;
+
 import com.shopapi.shopapi.entity.Product;
 import com.shopapi.shopapi.entity.ProductCategory;
 import com.shopapi.shopapi.repository.ProductRepository;
@@ -15,7 +14,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
