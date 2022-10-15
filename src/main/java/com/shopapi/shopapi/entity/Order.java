@@ -25,9 +25,6 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Long productId;
 
-    @Column(name = "amount")
-    private Long amount;
-
     @Column(name = "order_date")
     private LocalDateTime date;
 
