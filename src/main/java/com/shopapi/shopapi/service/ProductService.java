@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -43,6 +44,10 @@ public class ProductService {
     }
 
     public void removeProductById(Long id){
-        productRepository.deleteById(id);
+        productRepository.findById(id).ifPresentOrElse((product -> {
+            productRepository.deleteById(id);
+        }),() ->{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
     }
 }
