@@ -35,4 +35,12 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
     }
+
+    public void save(Order order){
+        orderRepository.save(order);
+    }
+
+    public void saveAll(Iterable<Order> orders){
+        orderRepository.saveAll(orders);
+    }
 }
