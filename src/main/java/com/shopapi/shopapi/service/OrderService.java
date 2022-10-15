@@ -27,20 +27,16 @@ public class OrderService {
     }
 
     public void setStatusById(Long orderId, OrderStatus status){
-        orderRepository.findById(orderId).ifPresentOrElse(
-                (order) -> {
+        Optional<Order> newOrder = orderRepository.findById(orderId);
+        newOrder.ifPresent((order -> {
             order.setOrderStatus(status);
-        },
-                () -> {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        });
+            orderRepository.save(order);
+        }));
+
     }
 
     public void save(Order order){
         orderRepository.save(order);
     }
 
-    public void saveAll(Iterable<Order> orders){
-        orderRepository.saveAll(orders);
-    }
 }

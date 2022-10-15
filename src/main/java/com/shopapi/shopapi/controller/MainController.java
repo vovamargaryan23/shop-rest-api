@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 
+
 @RestController
 @RequestMapping("/{userId}")
 public class MainController {
@@ -33,12 +34,8 @@ public class MainController {
     private UserService userService;
     private final Set<Product> cart;
 
-    private final Set<Order> submission;
-
-
     public MainController() {
         this.cart = new HashSet<>();
-        this.submission = new HashSet<>();
     }
 
     //User Requests
@@ -59,22 +56,19 @@ public class MainController {
 
     @DeleteMapping("/cart/{productId}")
     public void removeFromCart(@PathVariable("productId") Long id){
-        cart.removeIf(s -> Objects.equals(s.getProductId(), id));
+        cart.removeIf(product -> Objects.equals(product.getProductId(), id));
     }
 
     @PostMapping("/cart/submit")
     public void submitForApproval(@PathVariable("userId") Long userId){
         cart.forEach(product -> {
-            submission.add(new Order(userId,product.getProductId(), LocalDateTime.now(), OrderStatus.PENDING));
+            orderService.save(new Order(userId, product, LocalDateTime.now(), OrderStatus.PENDING));
         });
-        orderService.saveAll(submission);
-        submission.clear();
         cart.clear();
     }
 
 
     //Admin Requests
-
     @PostMapping("/products")
     public void addProduct(@RequestBody Product product, @PathVariable("userId") Long userId){
         checkUser(userId);
@@ -113,7 +107,6 @@ public class MainController {
         checkUser(userId);
         orderService.setStatusById(orderId,OrderStatus.DECLINED);
     }
-
 
     private void checkUser(Long id){
         if(!userService.findById(id).getRole().equals(Role.ROLE_ADMIN)){

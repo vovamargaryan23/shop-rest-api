@@ -3,6 +3,7 @@ package com.shopapi.shopapi.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,20 +12,19 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderId;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id")
+    @Column(name = "user_id")
     @NonNull
     private Long userId;
 
     @ManyToOne(targetEntity = Product.class)
-    @NonNull
     @JoinColumn(name = "product_id")
-    private Long productId;
+    @NonNull
+    private Product product;
 
     @Column(name = "order_date")
     @NonNull
