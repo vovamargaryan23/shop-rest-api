@@ -21,17 +21,16 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Optional<Order> getOrderById(Long orderId){
-        return Optional.ofNullable(orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-    }
 
     public void setStatusById(Long orderId, OrderStatus status){
         Optional<Order> newOrder = orderRepository.findById(orderId);
-        newOrder.ifPresent((order -> {
+        newOrder.ifPresentOrElse((order -> {
             order.setOrderStatus(status);
             orderRepository.save(order);
-        }));
+        }),
+                () -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
 
     }
 
