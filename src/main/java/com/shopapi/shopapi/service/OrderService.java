@@ -1,6 +1,7 @@
 package com.shopapi.shopapi.service;
 
 import com.shopapi.shopapi.entity.Order;
+import com.shopapi.shopapi.entity.OrderStatus;
 import com.shopapi.shopapi.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,15 @@ public class OrderService {
     public Optional<Order> getOrderById(Long orderId){
         return Optional.ofNullable(orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+    }
+
+    public void setStatusById(Long orderId, OrderStatus status){
+        orderRepository.findById(orderId).ifPresentOrElse(
+                (order) -> {
+            order.setOrderStatus(status);
+        },
+                () -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
     }
 }
