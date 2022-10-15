@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class ProductCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
